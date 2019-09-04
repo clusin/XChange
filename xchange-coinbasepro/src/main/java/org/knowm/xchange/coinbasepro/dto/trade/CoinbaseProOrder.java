@@ -20,12 +20,16 @@ public class CoinbaseProOrder {
   private final BigDecimal executedvalue;
   private final String stop;
   private final BigDecimal stopPrice;
+  private final String timeInForce;
+  private final boolean postOnly;
 
   public CoinbaseProOrder(
       @JsonProperty("id") String id,
       @JsonProperty("price") BigDecimal price,
       @JsonProperty("size") BigDecimal size,
       @JsonProperty("product_id") String productId,
+      @JsonProperty("time_in_force") String timeInForce,
+      @JsonProperty("post_only") boolean postOnly,
       @JsonProperty("side") String side,
       @JsonProperty("created_at") String createdAt,
       @JsonProperty("done_at") String doneAt,
@@ -54,6 +58,8 @@ public class CoinbaseProOrder {
     this.executedvalue = executedValue;
     this.stop = stop;
     this.stopPrice = stopPrice;
+    this.postOnly = postOnly;
+    this.timeInForce = timeInForce;
   }
 
   public String getId() {
@@ -120,6 +126,14 @@ public class CoinbaseProOrder {
     return stopPrice;
   }
 
+  public String getTimeInForce() {
+    return timeInForce;
+  }
+
+  public boolean isPostOnly() {
+    return postOnly;
+  }
+
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
@@ -149,6 +163,10 @@ public class CoinbaseProOrder {
     builder.append(stop);
     builder.append(", stopPrice=");
     builder.append(stopPrice);
+    builder.append(", timeInForce=");
+    builder.append(timeInForce);
+    builder.append(", postOnly=");
+    builder.append(postOnly);
     builder.append("]");
     return builder.toString();
   }

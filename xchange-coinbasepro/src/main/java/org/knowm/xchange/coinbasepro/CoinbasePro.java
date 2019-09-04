@@ -19,6 +19,7 @@ import javax.ws.rs.core.MediaType;
 import org.knowm.xchange.coinbasepro.dto.CoinbaseProException;
 import org.knowm.xchange.coinbasepro.dto.CoinbaseProTrades;
 import org.knowm.xchange.coinbasepro.dto.CoinbaseProTransfers;
+import org.knowm.xchange.coinbasepro.dto.account.CoinbaseProFees;
 import org.knowm.xchange.coinbasepro.dto.account.CoinbaseProSendMoneyRequest;
 import org.knowm.xchange.coinbasepro.dto.account.CoinbaseProWithdrawCryptoResponse;
 import org.knowm.xchange.coinbasepro.dto.account.CoinbaseProWithdrawFundsRequest;
@@ -124,6 +125,17 @@ public interface CoinbasePro {
       @HeaderParam("CB-ACCESS-PASSPHRASE") String passphrase,
       @PathParam("status") String status)
       throws CoinbaseProException, IOException;
+
+  @GET
+  @Path("orders")
+  @Produces(MediaType.APPLICATION_JSON)
+  CoinbaseProOrder[] getListOrders(
+      @QueryParam("status") String status,
+      @QueryParam("product_id") String productId,
+      @HeaderParam("CB-ACCESS-KEY") String apiKey,
+      @HeaderParam("CB-ACCESS-SIGN") ParamsDigest signer,
+      @HeaderParam("CB-ACCESS-TIMESTAMP") SynchronizedValueFactory<Long> nonce,
+      @HeaderParam("CB-ACCESS-PASSPHRASE") String passphrase);
 
   @POST
   @Path("orders")
@@ -272,6 +284,15 @@ public interface CoinbasePro {
       @HeaderParam("CB-ACCESS-TIMESTAMP") SynchronizedValueFactory<Long> nonce,
       @HeaderParam("CB-ACCESS-PASSPHRASE") String passphrase,
       @PathParam("account_id") String accountId);
+
+  @GET
+  @Path("fees")
+  CoinbaseProFees getCoinbaseProFees(
+      @HeaderParam("CB-ACCESS-KEY") String apiKey,
+      @HeaderParam("CB-ACCESS-SIGN") ParamsDigest signer,
+      @HeaderParam("CB-ACCESS-TIMESTAMP") SynchronizedValueFactory<Long> nonce,
+      @HeaderParam("CB-ACCESS-PASSPHRASE") String passphrase)
+      throws CoinbaseProException, IOException;
 
   @GET
   @Path("/users/self/verify")

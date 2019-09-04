@@ -116,7 +116,7 @@ public class BitmexMarketDataService extends BitmexMarketDataServiceRaw
     }
     BitmexContract contract = new BitmexContract(currencyPair, prompt);
     String bitmexSymbol = BitmexUtils.translateBitmexContract(contract);
-    List<BitmexPublicTrade> trades = getBitmexTrades(bitmexSymbol, limit, start);
+    List<BitmexPublicTrade> trades = getBitmexTrades(bitmexSymbol, true, limit, start, null);
     return BitmexAdapters.adaptTrades(trades, currencyPair);
   }
 }

@@ -9,6 +9,7 @@ import org.knowm.xchange.Exchange;
 import org.knowm.xchange.coinbasepro.CoinbasePro;
 import org.knowm.xchange.coinbasepro.dto.CoinbaseProException;
 import org.knowm.xchange.coinbasepro.dto.CoinbaseProTransfers;
+import org.knowm.xchange.coinbasepro.dto.account.CoinbaseProFees;
 import org.knowm.xchange.coinbasepro.dto.account.CoinbaseProSendMoneyRequest;
 import org.knowm.xchange.coinbasepro.dto.account.CoinbaseProWebsocketAuthData;
 import org.knowm.xchange.coinbasepro.dto.account.CoinbaseProWithdrawCryptoResponse;
@@ -86,6 +87,10 @@ public class CoinbaseProAccountServiceRaw extends CoinbaseProBaseService {
   public CoinbaseProAccountAddress getCoinbaseAccountAddress(String accountId) {
     return coinbasePro.getCoinbaseProAccountAddress(
         apiKey, digest, nonceFactory, passphrase, accountId);
+  }
+
+  public CoinbaseProFees getCoinbaseAccountFeeSchedule() throws IOException {
+    return coinbasePro.getCoinbaseProFees(apiKey, digest, nonceFactory, passphrase);
   }
 
   public CoinbaseProWebsocketAuthData getWebsocketAuthData()

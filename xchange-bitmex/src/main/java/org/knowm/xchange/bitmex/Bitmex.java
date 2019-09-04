@@ -23,8 +23,19 @@ public interface Bitmex {
       @QueryParam("symbol") String currencyPair,
       @QueryParam("reverse") Boolean reverse,
       @Nullable @QueryParam("count") Integer count,
-      @Nullable @QueryParam("start") Long start)
+      @Nullable @QueryParam("start") Long start,
+      @Nullable @QueryParam("filter") String filter)
       throws IOException, BitmexException;
+
+  @GET
+  @Path("trade")
+  BitmexPublicTradeList getTradesBetween(
+          @QueryParam("symbol") String currencyPair,
+          @QueryParam("count") Integer count,
+          @QueryParam("start") Long start,
+          @QueryParam("startTime") String startTime,
+          @QueryParam("endTime") String endTime);
+
 
   @GET
   @Path("trade/bucketed")

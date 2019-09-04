@@ -144,6 +144,15 @@ public class CoinbaseProTradeServiceRaw extends CoinbaseProBaseService {
     }
   }
 
+  public CoinbaseProOrder[] getOrders(String status, String product_id) {
+    try {
+      return coinbasePro.getListOrders(
+          status, product_id, apiKey, digest, nonceFactory, passphrase);
+    } catch (CoinbaseProException cpe) {
+      throw handleError(cpe);
+    }
+  }
+
   public static class GdaxTradeHistoryParams
       implements TradeHistoryParamTransactionId, TradeHistoryParamCurrencyPair {
 

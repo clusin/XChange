@@ -52,9 +52,10 @@ public class BitmexMarketDataServiceRaw extends BitmexBaseService {
     return null;
   }
 
-  public List<BitmexPublicTrade> getBitmexTrades(String bitmexSymbol, Integer limit, Long start)
+  public List<BitmexPublicTrade> getBitmexTrades(
+      String bitmexSymbol, boolean reverse, Integer limit, Long start, String filter)
       throws ExchangeException {
-    return updateRateLimit(() -> bitmex.getTrades(bitmexSymbol, true, limit, start));
+    return updateRateLimit(() -> bitmex.getTrades(bitmexSymbol, reverse, limit, start, filter));
   }
 
   public BitmexTickerList getTicker(String symbol) throws ExchangeException {
