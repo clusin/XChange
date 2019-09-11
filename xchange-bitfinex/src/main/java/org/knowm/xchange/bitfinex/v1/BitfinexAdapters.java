@@ -1,7 +1,6 @@
 package org.knowm.xchange.bitfinex.v1;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -498,7 +497,7 @@ public final class BitfinexAdapters {
   }
 
   public static ExchangeMetaData adaptMetaData(
-          List<CurrencyPair> currencyPairs, ExchangeMetaData metaData) {
+      List<CurrencyPair> currencyPairs, ExchangeMetaData metaData) {
 
     Map<CurrencyPair, CurrencyPairMetaData> pairsMap = metaData.getCurrencyPairs();
     Map<Currency, CurrencyMetaData> currenciesMap = metaData.getCurrencies();
@@ -508,9 +507,9 @@ public final class BitfinexAdapters {
 
     // Remove currencies that are no-longer in use
     Set<Currency> currencies =
-            currencyPairs.stream()
-                    .flatMap(pair -> Stream.of(pair.base, pair.counter))
-                    .collect(Collectors.toSet());
+        currencyPairs.stream()
+            .flatMap(pair -> Stream.of(pair.base, pair.counter))
+            .collect(Collectors.toSet());
     currenciesMap.keySet().retainAll(currencies);
 
     // Add missing pairs and currencies
@@ -521,10 +520,10 @@ public final class BitfinexAdapters {
 
       if (!currenciesMap.containsKey(c.base)) {
         currenciesMap.put(
-                c.base,
-                new CurrencyMetaData(
-                        2,
-                        null)); // When missing, add default meta-data with scale of 2 (Bitfinex's minimal
+            c.base,
+            new CurrencyMetaData(
+                2,
+                null)); // When missing, add default meta-data with scale of 2 (Bitfinex's minimal
         // scale)
       }
       if (!currenciesMap.containsKey(c.counter)) {
@@ -544,39 +543,39 @@ public final class BitfinexAdapters {
    * @return
    */
   public static ExchangeMetaData adaptMetaData(
-          ExchangeMetaData exchangeMetaData,
-          List<BitfinexSymbolDetail> symbolDetails,
-          Map<CurrencyPair, BigDecimal> lastPrices) {
+      ExchangeMetaData exchangeMetaData,
+      List<BitfinexSymbolDetail> symbolDetails,
+      Map<CurrencyPair, BigDecimal> lastPrices) {
 
     final Map<CurrencyPair, CurrencyPairMetaData> currencyPairs =
-            exchangeMetaData.getCurrencyPairs();
+        exchangeMetaData.getCurrencyPairs();
     symbolDetails
-            .parallelStream()
-            .forEach(
-                    bitfinexSymbolDetail -> {
-                      final CurrencyPair currencyPair = adaptCurrencyPair(bitfinexSymbolDetail.getPair());
+        .parallelStream()
+        .forEach(
+            bitfinexSymbolDetail -> {
+              final CurrencyPair currencyPair = adaptCurrencyPair(bitfinexSymbolDetail.getPair());
 
-                      // Infer price-scale from last and price-precision
-                      BigDecimal last = lastPrices.get(currencyPair);
+              // Infer price-scale from last and price-precision
+              BigDecimal last = lastPrices.get(currencyPair);
 
-                      if (last != null) {
-                        int pricePercision = bitfinexSymbolDetail.getPrice_precision();
-                        int priceScale = last.scale() + (pricePercision - last.precision());
+              if (last != null) {
+                int pricePercision = bitfinexSymbolDetail.getPrice_precision();
+                int priceScale = last.scale() + (pricePercision - last.precision());
 
-                        CurrencyPairMetaData newMetaData =
-                                new CurrencyPairMetaData(
-                                        currencyPairs.get(currencyPair) == null
-                                                ? null
-                                                : currencyPairs
-                                                .get(currencyPair)
-                                                .getTradingFee(), // Take tradingFee from static metaData if exists
-                                        bitfinexSymbolDetail.getMinimum_order_size(),
-                                        bitfinexSymbolDetail.getMaximum_order_size(),
-                                        priceScale,
-                                        null);
-                        currencyPairs.put(currencyPair, newMetaData);
-                      }
-                    });
+                CurrencyPairMetaData newMetaData =
+                    new CurrencyPairMetaData(
+                        currencyPairs.get(currencyPair) == null
+                            ? null
+                            : currencyPairs
+                                .get(currencyPair)
+                                .getTradingFee(), // Take tradingFee from static metaData if exists
+                        bitfinexSymbolDetail.getMinimum_order_size(),
+                        bitfinexSymbolDetail.getMaximum_order_size(),
+                        priceScale,
+                        null);
+                currencyPairs.put(currencyPair, newMetaData);
+              }
+            });
     return exchangeMetaData;
   }
 
