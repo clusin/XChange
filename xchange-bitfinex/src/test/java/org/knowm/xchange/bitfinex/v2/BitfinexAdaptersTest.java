@@ -1,12 +1,12 @@
 package org.knowm.xchange.bitfinex.v2;
 
-import static org.junit.Assert.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.junit.Assert;
 import org.junit.Test;
+import org.knowm.xchange.ExchangeFactory;
 import org.knowm.xchange.currency.CurrencyPair;
 
 public class BitfinexAdaptersTest {
@@ -18,5 +18,10 @@ public class BitfinexAdaptersTest {
             .collect(Collectors.toList());
     String formattedPairs = BitfinexAdapters.adaptCurrencyPairsToTickersParam(currencyPairs);
     Assert.assertEquals("tBTCUSD,tETHUSD,tETHBTC", formattedPairs);
+  }
+
+  @Test
+  public void testV2Instantiation() {
+    ExchangeFactory.INSTANCE.createExchange(BitfinexExchange.class);
   }
 }
